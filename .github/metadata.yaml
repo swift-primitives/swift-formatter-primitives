@@ -1,0 +1,9 @@
+# .github/metadata.yaml
+# Bootstrap stub — populate description / topics during release-readiness.
+description: "Formatter primitives for Swift."
+topics:
+  - primitives
+  - formatter
+homepage: "https://swift-institute.org"
+readme:
+  family: E
