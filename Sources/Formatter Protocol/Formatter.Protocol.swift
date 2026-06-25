@@ -5,6 +5,8 @@
 //  Core Formatter protocol definition.
 //
 
+public import Formatter_Primitive
+
 extension Formatter {
     /// A type that converts a value to formatted output.
     ///

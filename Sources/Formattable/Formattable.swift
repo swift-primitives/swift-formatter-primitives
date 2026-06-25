@@ -5,6 +5,9 @@
 //  Canonical attachment protocol for formatting.
 //
 
+public import Formatter_Primitive
+public import Formatter_Protocol
+
 /// A type that has a canonical formatter.
 ///
 /// Conforming types declare their canonical ``Formatter`` and provide a static
@@ -24,7 +27,7 @@
 /// ```
 public protocol Formattable {
     /// The canonical formatter type for this value.
-    associatedtype Formatter: Formatter_Primitives.Formatter.`Protocol`
+    associatedtype Formatter: Formatter_Primitive.Formatter.`Protocol`
 
     /// The canonical formatter instance.
     static var formatter: Formatter { get }
