@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Bootstrap stub — populate description / topics during release-readiness.
-description: "Formatter primitives for Swift."
+description: "Value-to-value formatting protocol for human-facing presentation, decoupled from parsing and serialization, in Swift."
 topics:
   - primitives
   - formatter
