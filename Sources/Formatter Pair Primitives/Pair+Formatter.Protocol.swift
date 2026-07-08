@@ -52,9 +52,9 @@ where
         throws(Either<First.Failure, Second.Failure>) -> Pair<First.Output, Second.Output>
     {
         let o0: First.Output
-        do { o0 = try first.format(value.first) } catch { throw .left(error) }
+        do throws(First.Failure) { o0 = try first.format(value.first) } catch { throw .left(error) }
         let o1: Second.Output
-        do { o1 = try second.format(value.second) } catch { throw .right(error) }
+        do throws(Second.Failure) { o1 = try second.format(value.second) } catch { throw .right(error) }
         return Pair<First.Output, Second.Output>(o0, o1)
     }
 }
