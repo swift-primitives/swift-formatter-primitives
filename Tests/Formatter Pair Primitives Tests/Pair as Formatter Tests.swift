@@ -6,6 +6,9 @@ import Testing
 
 /// Infallible decimal-rendering fixture: `Int -> String`.
 private struct DecimalFormatter: Formatter.`Protocol` {
+}
+
+extension DecimalFormatter {
     typealias Input = Int
     typealias Output = String
     typealias Failure = Never
@@ -18,7 +21,9 @@ private struct DecimalFormatter: Formatter.`Protocol` {
 /// Deliberately-failing fixture parameterised by failure type.
 private struct AlwaysFailing<Input, Output, Failure: Swift.Error>: Formatter.`Protocol` {
     let error: Failure
+}
 
+extension AlwaysFailing {
     func format(_ value: Input) throws(Failure) -> Output {
         throw error
     }
@@ -45,6 +50,7 @@ private struct SecondFailure: Swift.Error, Equatable {
 struct `Pair as Formatter Tests` {
     @Suite struct Unit {}
     @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
 }
 
 // MARK: - Unit
@@ -52,7 +58,7 @@ struct `Pair as Formatter Tests` {
 extension `Pair as Formatter Tests`.Unit {
 
     @Test
-    func `both arms succeed: output is a Pair of each arm's output`() throws(any Swift.Error) {
+    func `both arms succeed: output is a Pair of each arm's output`() throws(Either<Never, Never>) {
         let pair = Pair(DecimalFormatter(), DecimalFormatter())
         let formatted = try pair.format(Pair(42, 7))
         #expect(formatted.first == "42")
@@ -60,7 +66,7 @@ extension `Pair as Formatter Tests`.Unit {
     }
 
     @Test
-    func `arms receive distinct routed inputs (no input sharing)`() throws(any Swift.Error) {
+    func `arms receive distinct routed inputs (no input sharing)`() throws(Either<Never, Never>) {
         let pair = Pair(DecimalFormatter(), DecimalFormatter())
         let formatted = try pair.format(Pair(1, 2))
         #expect(formatted.first == "1")
@@ -68,7 +74,7 @@ extension `Pair as Formatter Tests`.Unit {
     }
 
     @Test
-    func `inferred typealiases compose: Output is Pair, Failure is Either`() throws(any Swift.Error) {
+    func `inferred typealiases compose: Output is Pair, Failure is Either`() throws(Either<Never, Never>) {
         // Type-level smoke: if Input/Output/Failure typealiases didn't infer,
         // the explicit type annotations on the values below would fail to compile.
         let pair = Pair(DecimalFormatter(), DecimalFormatter())
@@ -91,7 +97,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             DecimalFormatter()
         )
 
-        do {
+        do throws(Either<FirstFailure, Never>) {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected first arm to throw")
         } catch {
@@ -114,7 +120,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             AlwaysFailing<Int, String, SecondFailure>(error: secondError)
         )
 
-        do {
+        do throws(Either<Never, SecondFailure>) {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected second arm to throw")
         } catch {
@@ -138,7 +144,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             AlwaysFailing<Int, String, SecondFailure>(error: secondError)
         )
 
-        do {
+        do throws(Either<FirstFailure, SecondFailure>) {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected first arm to throw")
         } catch {
