@@ -74,7 +74,9 @@ extension `Pair as Formatter Tests`.Unit {
     }
 
     @Test
-    func `inferred typealiases compose: Output is Pair, Failure is Either`() throws(Either<Never, Never>) {
+    func `inferred typealiases compose: Output is Pair, Failure is Either`() throws(Either<
+        Never, Never
+    >) {
         // Type-level smoke: if Input/Output/Failure typealiases didn't infer,
         // the explicit type annotations on the values below would fail to compile.
         let pair = Pair(DecimalFormatter(), DecimalFormatter())
