@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-formatter-primitives",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27"),
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         // MARK: - Namespace
@@ -56,8 +56,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-either-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-pair-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-either-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-pair-primitives.git",
+            branch: "main"
+        ),
     ],
     targets: [
         // MARK: - Namespace
@@ -69,13 +75,13 @@ let package = Package(
         .target(
             name: "Formatter Protocol",
             dependencies: [
-                "Formatter Primitive",
+                "Formatter Primitive"
             ]
         ),
         .target(
             name: "Formattable",
             dependencies: [
-                "Formatter Protocol",
+                "Formatter Protocol"
             ]
         ),
 
@@ -84,7 +90,7 @@ let package = Package(
         .target(
             name: "Format",
             dependencies: [
-                "Formatter Protocol",
+                "Formatter Protocol"
             ]
         ),
 
@@ -118,7 +124,7 @@ let package = Package(
         .target(
             name: "Formatter Primitives Test Support",
             dependencies: [
-                "Formatter Primitives",
+                "Formatter Primitives"
             ],
             path: "Tests/Support"
         ),
@@ -128,7 +134,7 @@ let package = Package(
         .testTarget(
             name: "Formatter Pair Primitives Tests",
             dependencies: [
-                "Formatter Primitives Test Support",
+                "Formatter Primitives Test Support"
             ]
         ),
     ],
