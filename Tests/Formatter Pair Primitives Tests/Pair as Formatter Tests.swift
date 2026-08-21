@@ -2,9 +2,6 @@ import Formatter_Pair_Primitives
 import Formatter_Primitives_Test_Support
 import Testing
 
-// MARK: - Test Fixtures
-
-/// Infallible decimal-rendering fixture: `Int -> String`.
 private struct DecimalFormatter: Formatter.`Protocol` {
 }
 
@@ -18,7 +15,6 @@ extension DecimalFormatter {
     }
 }
 
-/// Deliberately-failing fixture parameterised by failure type.
 private struct AlwaysFailing<Input, Output, Failure: Swift.Error>: Formatter.`Protocol` {
     let error: Failure
 }
@@ -29,7 +25,6 @@ extension AlwaysFailing {
     }
 }
 
-/// Two distinct failure types so `.left` vs `.right` routing is observable.
 private struct FirstFailure: Swift.Error, Equatable {
     let tag: String
 }
@@ -38,22 +33,12 @@ private struct SecondFailure: Swift.Error, Equatable {
     let tag: String
 }
 
-// MARK: - Test Suite Structure
-
-/// Parallel-namespace test root for the generic conformance
-/// `extension Pair: Formatter.\`Protocol\``.
-///
-/// Per [SWIFT-TEST-003] the
-/// generic-type extension pattern is not available; the suite lives at
-/// top level as a non-generic parallel namespace.
 @Suite
 struct `Pair as Formatter Tests` {
     @Suite struct Unit {}
     @Suite struct `Edge Case` {}
     @Suite struct Integration {}
 }
-
-// MARK: - Unit
 
 extension `Pair as Formatter Tests`.Unit {
 
@@ -77,8 +62,7 @@ extension `Pair as Formatter Tests`.Unit {
     func `inferred typealiases compose: Output is Pair, Failure is Either`() throws(Either<
         Never, Never
     >) {
-        // Type-level smoke: if Input/Output/Failure typealiases didn't infer,
-        // the explicit type annotations on the values below would fail to compile.
+
         let pair = Pair(DecimalFormatter(), DecimalFormatter())
         let input: Pair<Int, Int> = Pair(10, 20)
         let output: Pair<String, String> = try pair.format(input)
@@ -86,8 +70,6 @@ extension `Pair as Formatter Tests`.Unit {
         #expect(output.second == "20")
     }
 }
-
-// MARK: - Edge Case
 
 extension `Pair as Formatter Tests`.`Edge Case` {
 
@@ -103,7 +85,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected first arm to throw")
         } catch {
-            // Typed throws: catch binds `error` as Either<FirstFailure, Never>.
+
             switch error {
             case .left(let inner):
                 #expect(inner == firstError)
@@ -126,7 +108,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected second arm to throw")
         } catch {
-            // Typed throws: catch binds `error` as Either<Never, SecondFailure>.
+
             switch error {
             case .left:
                 Issue.record("Expected .right, got .left")
@@ -150,7 +132,7 @@ extension `Pair as Formatter Tests`.`Edge Case` {
             _ = try pair.format(Pair(1, 2))
             Issue.record("Expected first arm to throw")
         } catch {
-            // Typed throws: catch binds `error` as Either<FirstFailure, SecondFailure>.
+
             switch error {
             case .left(let inner):
                 #expect(inner == firstError)
@@ -159,6 +141,6 @@ extension `Pair as Formatter Tests`.`Edge Case` {
                 Issue.record("Expected .left (first arm short-circuits), got .right")
             }
         }
-        _ = secondError  // referenced to document intent; arm never runs
+        _ = secondError
     }
 }

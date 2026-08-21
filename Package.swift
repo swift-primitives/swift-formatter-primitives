@@ -12,7 +12,6 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // MARK: - Namespace
 
         .library(
             name: "Formatter Primitive",
@@ -27,28 +26,20 @@ let package = Package(
             targets: ["Formattable"]
         ),
 
-        // MARK: - Witness
-
         .library(
             name: "Format",
             targets: ["Format"]
         ),
-
-        // MARK: - Shape-Primitive Integration
 
         .library(
             name: "Formatter Pair Primitives",
             targets: ["Formatter Pair Primitives"]
         ),
 
-        // MARK: - Umbrella
-
         .library(
             name: "Formatter Primitives",
             targets: ["Formatter Primitives"]
         ),
-
-        // MARK: - Test Support
 
         .library(
             name: "Formatter Primitives Test Support",
@@ -66,7 +57,6 @@ let package = Package(
         ),
     ],
     targets: [
-        // MARK: - Namespace
 
         .target(
             name: "Formatter Primitive",
@@ -85,16 +75,12 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Witness
-
         .target(
             name: "Format",
             dependencies: [
                 "Formatter Protocol"
             ]
         ),
-
-        // MARK: - Shape-Primitive Integration
 
         .target(
             name: "Formatter Pair Primitives",
@@ -105,8 +91,6 @@ let package = Package(
                 .product(name: "Pair Primitives", package: "swift-pair-primitives"),
             ]
         ),
-
-        // MARK: - Umbrella
 
         .target(
             name: "Formatter Primitives",
@@ -119,8 +103,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
-
         .target(
             name: "Formatter Primitives Test Support",
             dependencies: [
@@ -128,8 +110,6 @@ let package = Package(
             ],
             path: "Tests/Support"
         ),
-
-        // MARK: - Tests
 
         .testTarget(
             name: "Formatter Pair Primitives Tests",
